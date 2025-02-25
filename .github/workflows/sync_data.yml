@@ -1,0 +1,33 @@
+name: Sync Fair-LLM-Benchmark Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+  workflow_dispatch:  # Allows manual trigger from GitHub Actions
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout LLM-as-a-judge
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Sync Fair-LLM-Benchmark Data
+        run: |
+          rm -rf data/raw/prompts
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/i-gallegos/Fair-LLM-Benchmark.git temp_repo
+          cd temp_repo
+          git sparse-checkout set BOLD/data/prompts
+          mv BOLD/data/prompts ../data/raw/
+          cd ..
+          rm -rf temp_repo
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add data/raw/prompts
+          git commit -m "Auto-sync Fair-LLM-Benchmark data" || exit 0
+          git push
