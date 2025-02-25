@@ -163,4 +163,6 @@ cython_debug/
 .vscode/
 
 # Data folder
-data/
+!data/
+!data/raw/
+!data/processed/
