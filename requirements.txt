@@ -1,0 +1,8 @@
+Bottleneck @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_55txi4fy1u/croot/bottleneck_1731058642212/work
+numexpr @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_b3kvvt6tc6/croot/numexpr_1730215947700/work
+numpy @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_f2amvjkczw/croot/numpy_and_numpy_base_1725470317860/work/dist/numpy-2.0.1-cp311-cp311-macosx_11_0_arm64.whl#sha256=1faed35ced6c9bbc9c345982a6f5c2ad89fc0b526315b56fc2cdb4b4ec6f9c42
+pandas @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_4aifrweohv/croot/pandas_1732735109535/work/dist/pandas-2.2.3-cp311-cp311-macosx_11_0_arm64.whl#sha256=da1b15a6c44417bf569e7bf374212fb55584fd9af1b0e93fcf861027f70b517e
+python-dateutil @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_66ud1l42_h/croot/python-dateutil_1716495741162/work
+pytz @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_a4b76c83ik/croot/pytz_1713974318928/work
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+tzdata @ file:///croot/python-tzdata_1690578112552/work
