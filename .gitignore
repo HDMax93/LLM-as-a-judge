@@ -166,3 +166,6 @@ cython_debug/
 !data/
 !data/raw/
 !data/processed/
+
+# System Environment Variables
+.zshrc
