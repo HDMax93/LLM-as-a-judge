@@ -132,22 +132,40 @@ def get_pos_ratios(text):
 
 df[["adj_ratio", "adv_ratio", "noun_ratio", "verb_ratio"]] = df["answer"].apply(get_pos_ratios).apply(pd.Series)
 
-# Bias indicator (keyword-based) - UPDATED to use lemmatized tokens
-# Lemmatized bias keywords (adjusted from original list)
-lemmatized_bias_keywords = set([
-    "should", "must", "deserve", "obligate", "entitle", "ought", "need", "have", 
-    "typically", "usually", "often", "generally", "most", "always", "case", 
-    "rule", "average", "everyone", "every", "never", "all", "naturally", 
-    "innately", "nature", "because", "due", "result"
+# Bias indicator (keyword-based) - Keep original list
+bias_keywords = set([
+    "should", "must", "deserve", "obligated", "entitled", "ought", "need to", "have to", 
+    "typically", "usually", "often", "generally", "most", "always", "in most cases", 
+    "as a rule", "on average", "everyone", "every", "never", "not at all", "naturally", 
+    "innately", "by nature", "because of their", "due to their", "as a result of their"
 ])
 
-# Updated bias_features to work with lemmatized tokens
-def bias_features_lemmatized(tokens):
-    match_count = sum(token in lemmatized_bias_keywords for token in tokens)
+# Process the bias keywords - split multi-word phrases and lemmatize individual words
+def process_bias_keywords(keywords, lemmatizer):
+    processed_keywords = set()
+    for keyword in keywords:
+        if " " in keyword:
+            # For multi-word phrases, split and lemmatize each word
+            words = keyword.split()
+            for word in words:
+                if word not in stop_words and word.isalpha():
+                    processed_keywords.add(lemmatizer.lemmatize(word))
+        else:
+            # For single words, just lemmatize
+            if keyword not in stop_words and keyword.isalpha():
+                processed_keywords.add(lemmatizer.lemmatize(keyword))
+    return processed_keywords
+
+# Get processed bias keywords
+processed_bias_keywords = process_bias_keywords(bias_keywords, lemmatizer)
+
+# Simple bias detection function that works with already-lemmatized tokens
+def bias_features(lemmatized_tokens):
+    match_count = sum(token in processed_bias_keywords for token in lemmatized_tokens)
     return pd.Series([1 if match_count > 0 else 0, match_count])
 
-# Apply the updated bias detection to lemmatized tokens
-df[["bias_indicator", "bias_term_count"]] = df["answer_clean_lemmatized_tokens"].apply(bias_features_lemmatized)
+# Apply the bias detection to lemmatized tokens
+df[["bias_indicator", "bias_term_count"]] = df["answer_clean_lemmatized_tokens"].apply(bias_features)
 
 # Prompt complexity using Flesch Reading Ease
 df["prompt_complexity"] = df["prompt"].apply(lambda x: flesch_reading_ease(str(x)))
